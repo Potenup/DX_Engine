@@ -1,9 +1,9 @@
 #include <Windows.h>
-
+#include "Math/Vector2.h"
 #include "Core/Window.h"
 #include "Render/Renderer.h"
 #include "Core/Engine.h"
-
+#include <iostream>
 // 창에 관련된 메시지를 처리하는 콜백함수,
 LRESULT CALLBACK WindowProc(HWND handle, UINT message, WPARAM wparam, LPARAM lparam)
 {
@@ -160,6 +160,7 @@ int WINAPI WinMain(
 #pragma endregion beforeAllCode
 
     Engine engine(1280, 800, TEXT("Engine Demo"), hInstance);
-
+    Vector2 a = Vector2(2.0f, 2.0f);
+    printf("%s", a.ToString());
     return (0);
 }
