@@ -4,25 +4,25 @@
 
 namespace Blue
 {
+	// 싱글톤 객체 설정.
 	Engine* Engine::instance = nullptr;
 
 	Engine::Engine(
 		uint32 width,
 		uint32 height,
 		const std::wstring& title,
-		HINSTANCE hInstance
-	)
+		HINSTANCE hInstance)
 	{
 		// 싱글톤 객체 값 설정.
-		this->instance = this;
+		instance = this;
 
 		// 창 객체 생성.
-		this->window = std::make_shared<Window>(
+		window = std::make_shared<Window>(
 			width, height, title, hInstance, WindowProc
 		);
 
 		// 렌더러 생성.
-		this->renderer = std::make_shared<Renderer>(
+		renderer = std::make_shared<Renderer>(
 			width, height, window->Handle()
 		);
 	}
@@ -35,11 +35,9 @@ namespace Blue
 	{
 		// 메시지 처리 루프.
 		MSG msg = {};
-
-		// 루프
 		while (msg.message != WM_QUIT)
 		{
-			// 창에 메시지가 들어올 떄 실행.
+			// 창에 메시지가 들어올때 실행.
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
 				// 메시지 번역.
@@ -48,6 +46,7 @@ namespace Blue
 				// 메시지 전달.
 				DispatchMessage(&msg);
 			}
+
 			// 창에 메시지가 없을 때 다른 작업 처리.
 			else
 			{
@@ -57,21 +56,16 @@ namespace Blue
 		}
 	}
 
-	LRESULT Engine::WindowProc(
-		HWND handle, 
-		UINT message, 
-		WPARAM wparam, 
-		LPARAM lparam
-	)
+	LRESULT Engine::WindowProc(HWND handle, UINT message, WPARAM wparam, LPARAM lparam)
 	{
 		// 메시지 처리.
 		switch (message)
 		{
 			// 창이 삭제되면 실행됨.
 		case WM_DESTROY:
-			// 이 때 프로그램 종료 메시지를 발생.
+			// 이때 프로그램 종료 메시지를 발행.
 			PostQuitMessage(0);
-			return (0);
+			return 0;
 		}
 
 		// 기본 메시지 처리.
@@ -80,6 +74,16 @@ namespace Blue
 
 	Engine& Engine::Get()
 	{
-		return (*instance);
+		return *instance;
+	}
+
+	ID3D11Device& Engine::Device() const
+	{
+		return *renderer->device;
+	}
+
+	ID3D11DeviceContext& Engine::Context() const
+	{
+		return *renderer->context;
 	}
 }
