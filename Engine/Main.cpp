@@ -19,8 +19,11 @@ using namespace Blue;
 //    return 0;
 //}
 
+#include "Render/Texture.h"
+
 int main()
 {
+	//Texture texture("T_coord.png"); text ÄÚµå
 	Engine engine(1280, 800, TEXT("Engine Demo"), GetModuleHandle(nullptr));
 	engine.Run();
 }
