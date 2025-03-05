@@ -20,10 +20,24 @@ using namespace Blue;
 //}
 
 #include "Render/Texture.h"
+#include "Core/Common.h"
+#include <typeinfo>
+#include <Shader/Shader.h>
+#include <Shader/TextureMappingShader.h>
+
+//template<typename T, typename std::enable_if<std::is_base_of<Shader, T>::value>::type* = nullptr>
+//void TestClass()
+//{
+//	std::boolalpha(std::cout);
+//	std::cout << typeid(T).name() << std::endl;
+//	std::cout << std::is_base_of<Shader, T>::value << std::endl;
+//}
 
 int main()
 {
-	//Texture texture("T_coord.png"); text 코드
+
+	//TestClass<Engine>(); // 컴파일 시점에 인지 가능한 함수,
+	//Texture texture("T_coord.png"); //text 코드
 	Engine engine(1280, 800, TEXT("Engine Demo"), GetModuleHandle(nullptr));
 	engine.Run();
 }
