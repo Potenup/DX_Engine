@@ -142,6 +142,9 @@ namespace Blue
 		// 컨텍스트 얻어오기.
 		static ID3D11DeviceContext& context = Engine::Get().Context();
 
+		// 트랜스폼 바인딩.
+		transform.Bind();
+
 		// 루프 순회하면서 바인딩 & 드로우.
 		for (int ix = 0; ix < (int32)meshes.size(); ++ix)
 		{
@@ -150,9 +153,22 @@ namespace Blue
 			//{
 			//	continue ;
 			//}
-			meshes[ix]->Bind();
-			shaders[ix].lock()->Bind();
-			context.DrawIndexed(meshes[ix]->IndexCount(), 0, 0);
+
+			// 현재 리소스를 가져오기.
+			auto mesh = meshes[ix].lock();
+			auto shader = shaders[ix].lock();
+
+			// 리소스에 문제가 없으면 그리기.
+			if (mesh && shader)
+			{
+				mesh->Bind();
+				shader->Bind();
+				context.DrawIndexed(mesh->IndexCount(), 0, 0);
+			}
+
+			//meshes[ix]->Bind();
+			//shaders[ix].lock()->Bind();
+			//context.DrawIndexed(meshes[ix]->IndexCount(), 0, 0);
 		}
 	}
 }

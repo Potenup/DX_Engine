@@ -3,6 +3,7 @@
 #include "../Render/Renderer.h"
 #include "Resource/ShaderLoader.h"
 #include "Resource/TextureLoader.h"
+#include "Resource/ModelLoader.h"
 
 namespace Blue
 {
@@ -28,6 +29,9 @@ namespace Blue
 
 		// 텍스쳐 로더 객체 생성.
 		textureLoader = std::make_unique<TextureLoader>();
+
+		// 모델 로더 객체 생성.
+		modelLoader = std::make_unique<ModelLoader>();
 
 		// 렌더러 생성.
 		renderer = std::make_shared<Renderer>(

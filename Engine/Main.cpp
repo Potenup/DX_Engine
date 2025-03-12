@@ -1,5 +1,7 @@
 #include "Core/Engine.h"
 #include <iostream>
+#include <detours.h>
+#include <dxgi.h>
 
 //#include "Math/Vector2.h"
 
@@ -32,6 +34,8 @@ using namespace Blue;
 //	std::cout << typeid(T).name() << std::endl;
 //	std::cout << std::is_base_of<Shader, T>::value << std::endl;
 //}
+
+
 
 int main()
 {

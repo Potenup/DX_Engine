@@ -25,6 +25,31 @@ namespace Blue
 			D3D_FEATURE_LEVEL_11_0,
 		};
 
+		D3D_FEATURE_LEVEL outFeatureLevel;
+
+		// 장치 생성.
+		ThrowIfFailed(
+			D3D11CreateDevice(
+				nullptr,
+				D3D_DRIVER_TYPE_HARDWARE,
+				nullptr,
+				flag,
+				featureLevels,
+				_countof(featureLevels),
+				D3D11_SDK_VERSION,
+				&device,
+				&outFeatureLevel,
+				&context
+			), TEXT("Failed to create device")
+		);
+
+
+		// IDXGIFactory 구조체
+		IDXGIFactory* factory = nullptr;
+		////CreateDXGIFactory(__uuidof(factory),reinterpret_cast<void**>(&factory));
+		ThrowIfFailed(CreateDXGIFactory(IID_PPV_ARGS(&factory)), TEXT("Faild to create dxgifactory"));
+
+
 		// 스왑 체인 정보 구조체.
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = { };
 		swapChainDesc.Windowed = true;		// 창 모드?.
@@ -41,21 +66,28 @@ namespace Blue
 		//D3D_FEATURE_LEVEL targetLevel;
 
 		// 장치 생성.
-		ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
-			nullptr,
-			D3D_DRIVER_TYPE_HARDWARE,
-			nullptr,
-			flag,
-			featureLevels,
-			_countof(featureLevels),
-			D3D11_SDK_VERSION,
-			&swapChainDesc,
-			&swapChain,
-			&device,
-			nullptr,
-			&context
-		), TEXT("Failed to create devices"));
+		//ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
+		//	nullptr,
+		//	D3D_DRIVER_TYPE_HARDWARE,
+		//	nullptr,
+		//	flag,
+		//	featureLevels,
+		//	_countof(featureLevels),
+		//	D3D11_SDK_VERSION,
+		//	&swapChainDesc,
+		//	&swapChain,
+		//	&device,
+		//	nullptr,
+		//	&context
+		//), TEXT("Failed to create devices"));
 
+		ThrowIfFailed(
+			factory->CreateSwapChain(
+				device,
+				&swapChainDesc,
+				&swapChain
+			), TEXT("Failed to create a swap chain")
+		);
 
 		// 렌더 타겟 뷰 생성.
 		ID3D11Texture2D* backbuffer = nullptr;
@@ -82,7 +114,7 @@ namespace Blue
 		}
 
 		// 렌더 타겟 뷰 바인딩(연결).
-		context->OMSetRenderTargets(1, &renderTargetView, nullptr);
+		//context->OMSetRenderTargets(1, &renderTargetView, nullptr);
 
 		// 뷰포트(화면).
 		viewport.TopLeftX = 0.0f;
@@ -106,6 +138,23 @@ namespace Blue
 		if (mesh == nullptr)
 		{
 			mesh = std::make_unique<QuadMesh>();
+			mesh->transform.scale = Vector3::One * 0.5f;
+			mesh->transform.position.x = 0.5f;
+
+		}
+
+		if (mesh2 == nullptr)
+		{
+			mesh2 = std::make_unique<QuadMesh>();
+			mesh2->transform.scale = Vector3::One * 0.5f;
+			mesh2->transform.position.x = -0.5f;
+		}
+
+		if (mesh3 == nullptr)
+		{
+			mesh3 = std::make_unique<TriangleMesh>();
+			mesh3->transform.scale = Vector3::One * 0.5f;
+			mesh3->transform.position.y = 0.5f;
 		}
 
 		// 그리기 전 작업 (BeginScene).
@@ -117,9 +166,13 @@ namespace Blue
 
 		// @TEst.
 		mesh->Update(1.0f / 60.0f);
+		mesh2->Update(1.0f / 60.0f);
+
 
 		// 드로우.
 		mesh->Draw();
+		mesh2->Draw();
+		mesh3->Draw();
 
 		// 버퍼 교환. (EndScene/Present).
 		swapChain->Present(1u, 0u);

@@ -49,6 +49,12 @@ namespace Blue
 		// »ï°¢Çü ¸Þ½Ã °´Ã¼.
 		std::unique_ptr<class QuadMesh> mesh;
 
+		// »ï°¢Çü ¸Þ½Ã °´Ã¼.
+		std::unique_ptr<class QuadMesh> mesh2;
+
+		// »ï°¢Çü ¸Þ½Ã °´Ã¼.
+		std::unique_ptr<class TriangleMesh> mesh3;
+
 		//// ÀÔ·Â ·¹ÀÌ¾Æ¿ô.
 		//ID3D11InputLayout* inputlayout = nullptr;
 
